@@ -28,9 +28,6 @@ from .basemodel import BaseModel
 
 class Label(BaseModel):
 
-    FIELDS = [
-    ]
-
     PATH = "/labels"
 
     def __init__(self, data=None):
