@@ -30,7 +30,7 @@ class BaseModel(dict):
 
     @classmethod
     def by_id(cls, obj_id):
-        result = tci()._execute(self.PATH + "/" + obj_id)
+        result = tci()._execute(cls.PATH + "/" + obj_id)
         return cls(result)
     #end function
 
