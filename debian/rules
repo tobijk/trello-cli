@@ -6,3 +6,6 @@ export PYBUILD_NAME=trello-cli
 %:
 	dh $@  --with python3 --buildsystem=pybuild
 
+override_dh_auto_clean:
+	rm -fr lib/trello_cli.egg-info
+	dh_clean
