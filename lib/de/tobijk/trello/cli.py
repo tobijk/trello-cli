@@ -29,7 +29,7 @@ import argparse
 
 from .client import Client as TrelloClient
 from .config import Config
-from .error  import TrelloBaseError, CliInvocationError
+from .error  import TrelloBaseError, CliInvocationError, TrelloClientError
 from .board  import Board
 from .list   import List
 from .card   import Card
@@ -181,8 +181,9 @@ class CliList:
 
         lists = board.lists()
 
-        for l in lists:
-            print("| %s | %-45.45s |" % (l.id, l.name))
+        for i in range(len(lists)):
+            l = lists[i]
+            print("| %3d | %s | %-40.40s |" % (i, l.id, l.name))
     #end function
 
     def list_cards(self):
@@ -196,8 +197,9 @@ class CliList:
 
         cards = list_.cards()
 
-        for c in cards:
-            print("| %s | %-45.45s |" % (c.id, c.name))
+        for i in range(len(cards)):
+            c = cards[i]
+            print("| %3d | %s | %-40.40s |" % (i, c.id, c.name))
     #end function
 
     def list_labels(self):
@@ -211,8 +213,9 @@ class CliList:
 
         labels = board.labels()
 
-        for l in labels:
-            print("| %s | %-30.30s | %-10.10s |" % (l.id, l.name, l.color))
+        for i in range(len(labels)):
+            l = labels[i]
+            print("| %3d | %s | %-30.30s | %-10.10s |" % (i, l.id, l.name, l.color))
     #end function
 
     def _parse_opts(self):
