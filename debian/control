@@ -1,39 +1,24 @@
 Source: trello-cli
-Section: unknown
+Section: python
 Priority: optional
-Maintainer: Tobias Koch <tobias@ubuntu-lts-1604.localdomain
->
-Build-Depends: debhelper (>=9),dh-python,python-all (>= 2.6.6-3~),python-setuptools,python3-all,python3-setuptools
+Maintainer: Tobias Koch <tobias.koch@gmail.com>
+Build-Depends: debhelper (>=9),
+ dh-python,
+ python3-all,
+ python3-setuptools
 Standards-Version: 3.9.6
-Homepage: <insert the upstream URL, if relevant>
+Homepage: 
 X-Python-Version: >= 2.6
 X-Python3-Version: >= 3.2
-#Vcs-Git: git://anonscm.debian.org/collab-maint/trello-cli.git
-#Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/trello-cli.git
-
-Package: python-trello-cli
-Architecture: all
-Depends: ${python:Depends}, ${misc:Depends}
-Suggests: python-trello-cli-doc
-Description: <insert up to 60 chars description> (Python 2)
- <insert long description, indented with spaces>
- .
- This package installs the library for Python 2.
 
 Package: python3-trello-cli
-Architecture: all
-Depends: ${python3:Depends}, ${misc:Depends}
-Suggests: python-trello-cli-doc
-Description: <insert up to 60 chars description> (Python 3)
- <insert long description, indented with spaces>
+Architecture: any
+Depends: ${python3:Depends}, ${misc:Depends}, python3-requests
+Description: simple Trello API client library and CLI (Python 3)
+ This package contains a Python module that allows you to retrieve
+ information about your Trello boards, lists and cards.
  .
- This package installs the library for Python 3.
+ It comes with a simple CLI program.
+ .
+ This package is only available for Python3.
 
-Package: python-trello-cli-doc
-Architecture: all
-Section: doc
-Depends: ${sphinxdoc:Depends}, ${misc:Depends}
-Description: <insert up to 60 chars description> (common documentation)
- <insert long description, indented with spaces>
- .
- This is the common documentation package.
