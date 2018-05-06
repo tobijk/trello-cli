@@ -166,8 +166,9 @@ class CliList:
             boards = Board.all()
         #end if
 
-        for b in boards:
-            print("| %s | %-45.45s |" % (b.id, b.name))
+        for i in range(len(boards)):
+            b = boards[i]
+            print("| %3d | %s | %-40.40s |" % (i, b.id, b.name))
     #end function
 
     def list_lists(self):
