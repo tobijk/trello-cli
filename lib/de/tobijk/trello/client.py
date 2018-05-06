@@ -67,9 +67,9 @@ class Client:
 
         if not response.ok:
             if response.status_code >= 500:
-                raise TrelloServerError(response.reason)
+                raise TrelloServerError(response.reason + ": " + response.text)
             if response.status_code >= 400:
-                raise TrelloClientError(response.reason)
+                raise TrelloClientError(response.reason + ": " + response.text)
         #end if
 
         return response.json()
