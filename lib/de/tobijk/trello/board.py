@@ -47,7 +47,7 @@ class Board(BaseModel):
         if not filter in valid_filters:
             raise ValueError("invalid filter name '%s'" % filter)
 
-        params = {"filter": filter}
+        params = {"filter": filter, "fields": "id,name"}
 
         boards_data = tci()._execute("/members/me/boards", params=params)
 
@@ -63,10 +63,7 @@ class Board(BaseModel):
         super().__init__(data or {})
 
     def lists(self):
-        params = { "card_fields": "id,name,pos" }
-
-        lists_data = tci()._execute(self.PATH + "/" + self.id + List.PATH,
-                params=params)
+        lists_data = tci()._execute(self.PATH + "/" + self.id + List.PATH)
 
         list_of_lists = []
 
