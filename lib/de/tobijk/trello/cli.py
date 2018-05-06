@@ -237,3 +237,70 @@ class CliList:
 
 #end class
 
+class CliCreate:
+
+    def __init__(self, argv):
+        self._argv    = argv
+        self._options = {}
+    #end function
+
+    @staticmethod
+    def usage():
+        Cli.copyright()
+
+        sys.stdout.write(
+            "Usage: trello-cli create <TYPE> [OPTIONS]                         \n"
+            "                                                                  \n"
+            "TYPES:                                                            \n"
+            "                                                                  \n"
+            "   card                                                           \n"
+            "                                                                  \n"
+            "OPTIONS:                                                          \n"
+            "                                                                  \n"
+            " --name            Specify the name of the new item.              \n"
+            " --desc            More verbose description of the item.          \n"
+            "                                                                  \n"
+            " --position        Where to insert the item (relevant for cards). \n"
+            "                   This must be an integer. The item will be      \n"
+            "                   inserted just before the item which is         \n"
+            "                   currently at the given index (counting from 0).\n"
+            "                                                                  \n"
+            "                   In programmer parlance, this behaves like      \n"
+            "                   Python list's `insert` method.                 \n"
+            "                                                                  \n"
+            "                   Examples:                                      \n"
+            "                                                                  \n"
+            "                   0         - insert at the very beginning       \n"
+            "                   2         - insert before item at index 2      \n"
+            "                   len(list) - insert at the very end             \n"
+            "                                                                  \n"
+            " --list-id <id>    When creating cards, a list (column) needs to  \n"
+            "                   be specifed.                                   \n"
+            " --labels <id..>   Comma separate list of label IDs to tag a      \n"
+            "                   card with.                                     \n"
+            "                                                                  \n"
+        )
+    #end function
+
+    def execute_command(self):
+        known_types = ["card"]
+
+        try:
+            type_ = self._argv[1]
+        except IndexError:
+            type_ = None
+
+        self._parse_opts()
+
+        if type_ == "card":
+            self.create_card()
+        else:
+            CliList.usage()
+            sys.exit(Cli.EXIT_ERR)
+    #end function
+
+    def create_card(self):
+        pass
+
+#end class
+
