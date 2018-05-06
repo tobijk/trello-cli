@@ -32,7 +32,7 @@ setup(
     long_description='Very simple Trello API client and CLI',
 
     entry_points = {'console_scripts': [
-            "trello-cli = de.tobijk.trello.cli.Cli.main"
+            "trello-cli = de.tobijk.trello.cli:Cli.main"
         ]
     }
 )
