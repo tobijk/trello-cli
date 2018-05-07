@@ -263,8 +263,8 @@ class CliCreate:
             "                                                                  \n"
             "OPTIONS:                                                          \n"
             "                                                                  \n"
-            " --name            Specify the name of the new item.              \n"
-            " --desc            More verbose description of the item.          \n"
+            " --name <text>     Specify the name of the new item.              \n"
+            " --desc <text>     More verbose description of the item.          \n"
             "                                                                  \n"
             " --position        Where to insert the item (relevant for cards). \n"
             "                   This must be an integer. The item will be      \n"
@@ -284,6 +284,7 @@ class CliCreate:
             "                   be specifed.                                   \n"
             " --labels <id..>   Comma separate list of label IDs to tag a      \n"
             "                   card with.                                     \n"
+            " --comment <text>  An initial comment to attache to the card.     \n"
             "                                                                  \n"
         )
     #end function
@@ -337,12 +338,17 @@ class CliCreate:
         card.idList   = self._options["list-id"]
 
         list_.insert(pos, card)
+
+        comment = self._options.get("comment")
+        if comment:
+            card.add_comment(comment)
     #end function
 
     def _parse_opts(self):
         try:
             opts, args = getopt.getopt(self._argv[2:], "h",
-                    ["help", "name=", "desc=", "position=", "list-id=", "labels="])
+                    ["help", "name=", "desc=", "position=", "list-id=",
+                        "labels=", "comment="])
         except getopt.GetoptError as e:
             CliList.usage()
             sys.exit(Cli.EXIT_ERR)
@@ -370,6 +376,8 @@ class CliCreate:
             elif o == "--labels":
                 self._options["labels"] = list(
                         filter(bool, v.strip().split(",")))
+            elif o == "--comment":
+                self._options["comment"] = v.strip()
             #end if
         #end for
     #end function
