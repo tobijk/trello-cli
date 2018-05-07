@@ -3,6 +3,18 @@
 This is a very simplistic Python3 module for communicating with the Trello API. It comes with a small command
 line tool which allows you to list boards, lists and cards. You can create new cards with labels, a comment and a description.
 
+## Installation
+
+Build and install the Debian package:
+
+```
+dpkg-buildpackage -rfakeroot -b -us -uc
+
+cd ..
+
+sudo dpkg -i python3-trello-cli_0.1.0_amd64.deb
+```
+
 ## CLI Usage
 
 Create a configuration file `~/.trello-cli/config.json` and set your app key and token like this:
