@@ -24,7 +24,7 @@
 #
 
 import requests
-from .error import TrelloClientError, TrelloServerError
+from .error import TrelloClientError, TrelloServerError, TrelloConnectionError
 
 def tci():
     return Client.instance()
@@ -62,8 +62,11 @@ class Client:
                 verb = "POST"
         #end if
 
-        response = requests.request(verb, self._url + path, params=params,
+        try:
+            response = requests.request(verb, self._url + path, params=params,
                 data=data)
+        except requests.exceptions.ConnectionError:
+            raise TrelloConnectionError("could not connect to server.")
 
         if not response.ok:
             if response.status_code >= 500:

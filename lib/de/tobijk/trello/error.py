@@ -32,6 +32,9 @@ class TrelloClientError(TrelloBaseError):
 class TrelloServerError(TrelloBaseError):
     pass
 
+class TrelloConnectionError(TrelloBaseError):
+    pass
+
 class TrelloConfigUnusable(TrelloBaseError):
     pass
 
