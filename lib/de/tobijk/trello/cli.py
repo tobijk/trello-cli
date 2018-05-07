@@ -335,7 +335,6 @@ class CliCreate:
             card.desc = self._options["desc"]
 
         card.idLabels = labels
-        card.idList   = self._options["list-id"]
 
         list_.insert(pos, card)
 
