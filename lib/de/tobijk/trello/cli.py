@@ -98,6 +98,8 @@ class Cli:
 
         if command == "list":
             return CliList(sys.argv[1:]).execute_command()
+        if command == "create":
+            return CliCreate(sys.argv[1:]).execute_command()
         else:
             Cli.usage()
             sys.exit(Cli.EXIT_ERR)
@@ -299,12 +301,78 @@ class CliCreate:
         if type_ == "card":
             self.create_card()
         else:
-            CliList.usage()
+            CliCreate.usage()
             sys.exit(Cli.EXIT_ERR)
     #end function
 
     def create_card(self):
-        pass
+        if not "list-id" in self._options:
+            raise CliInvocationError("please specify a list id.")
+
+        try:
+            list_ = List.by_id(self._options["list-id"])
+        except TrelloClientError as e:
+            raise CliInvocationError("failed to locate the specified list.")
+
+        labels = self._options.get("labels", [])
+
+        for l in labels:
+            try:
+                Label.by_id(l)
+            except TrelloClientError as e:
+                raise CliInvocationError(
+                    "unable to locate or no such label: '%s'" % l)
+        #end for
+
+        card = Card()
+
+        pos = self._options.get("position", len(list_.cards()))
+
+        if ("name" in self._options) and self._options["name"]:
+            card.name = self._options["name"]
+        if ("desc" in self._options) and self._options["desc"]:
+            card.desc = self._options["desc"]
+
+        card.idLabels = labels
+        card.idList   = self._options["list-id"]
+
+        list_.insert(pos, card)
+    #end function
+
+    def _parse_opts(self):
+        try:
+            opts, args = getopt.getopt(self._argv[2:], "h",
+                    ["help", "name=", "desc=", "position=", "list-id=", "labels="])
+        except getopt.GetoptError as e:
+            CliList.usage()
+            sys.exit(Cli.EXIT_ERR)
+        #end try
+
+        for o, v in opts:
+            if o == "--help":
+                CliCreate.usage()
+                sys.exit(Cli.EXIT_OK)
+            elif o == "--name":
+                self._options["name"] = v.strip()
+            elif o == "--desc":
+                self._options["desc"] = v.strip()
+            elif o == "--position":
+                try:
+                    v = int(v.strip())
+                except ValueError:
+                    raise CliInvocationError(
+                            "expected an integer argument for --position.")
+                #end try
+
+                self._options["position"] = v
+            elif o == "--list-id":
+                self._options["list-id"] = v.strip()
+            elif o == "--labels":
+                self._options["labels"] = list(
+                        filter(bool, v.strip().split(",")))
+            #end if
+        #end for
+    #end function
 
 #end class
 

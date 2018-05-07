@@ -33,6 +33,7 @@ class Card(BaseModel):
         ("desc",        str ),
         ("due",         str ),
         ("dueComplete", bool),
+        ("idLabels",    list),
     ]
 
     PATH = "/cards"
