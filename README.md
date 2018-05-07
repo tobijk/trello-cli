@@ -98,12 +98,12 @@ And once you know the identifier of a list, you can query it for cards:
 ```python
 from de.tobijk.trello import List
 
-list_ = List.by_id("5aeddc7238bfa37f65227ba1")
+list_ = List.by_id("5aee01947afe7dd2dc784df8")
 
 cards = list_.cards()
 
 for c in cards:
-    print(card.id, card.name, card.desc)
+    print(c.id, c.name, c.desc)
 ```
 
 To create a new card, you need a list identifier and a card object:
@@ -111,13 +111,13 @@ To create a new card, you need a list identifier and a card object:
 ```python
 from de.tobijk.trello import List, Card
 
-list_ = List.by_id("5aeddc7238bfa37f65227ba1")
+list_ = List.by_id("5aee01947afe7dd2dc784df8")
 
 card = Card()
 
 card.name     = "Card Name"
 card.desc     = "Card Description"
-card.idLabels = ["labelId1", labelId2]
+card.idLabels = ["labelId1", "labelId2"]
 
 list_.insert(0, card)
 ```
