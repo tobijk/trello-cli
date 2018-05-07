@@ -1,2 +1,11 @@
 __pycache__
 .*.swp
+/.pybuild/
+/debian/debhelper-build-stamp
+/debian/files
+/debian/python3-trello-cli.debhelper.log
+/debian/python3-trello-cli.postinst.debhelper
+/debian/python3-trello-cli.prerm.debhelper
+/debian/python3-trello-cli.substvars
+/debian/python3-trello-cli/
+/lib/trello_cli.egg-info/
