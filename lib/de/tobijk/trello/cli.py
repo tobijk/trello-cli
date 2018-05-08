@@ -218,7 +218,7 @@ class CliList:
 
         for i in range(len(labels)):
             l = labels[i]
-            print("| %3d | %s | %-30.30s | %-10.10s |" % (i, l.id, l.name, l.color))
+            print("| %3d | %s | %-27.27s | %-10.10s |" % (i, l.id, l.name, l.color))
     #end function
 
     def _parse_opts(self):
