@@ -51,5 +51,8 @@ class Card(BaseModel):
                     verb="POST", params=params)
     #end function
 
+    def delete(self):
+        tci()._execute(self.PATH + "/" + self.id, verb="DELETE")
+
 #end class
 

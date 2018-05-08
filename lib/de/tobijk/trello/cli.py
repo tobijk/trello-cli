@@ -81,6 +81,7 @@ class Cli:
             "                                                                  \n"
             "   list                                                           \n"
             "   create                                                         \n"
+            "   delete                                                         \n"
             "                                                                  \n"
             "Run 'trello-cli <command> --help' for more information.           \n"
         )
@@ -99,6 +100,8 @@ class Cli:
             return CliList(sys.argv[1:]).execute_command()
         if command == "create":
             return CliCreate(sys.argv[1:]).execute_command()
+        if command == "delete":
+            return CliDelete(sys.argv[1:]).execute_command()
         else:
             Cli.usage()
             sys.exit(Cli.EXIT_ERR)
@@ -344,7 +347,7 @@ class CliCreate:
                     ["help", "name=", "desc=", "position=", "list-id=",
                         "labels=", "comment="])
         except getopt.GetoptError as e:
-            CliList.usage()
+            CliCreate.usage()
             sys.exit(Cli.EXIT_ERR)
         #end try
 
@@ -372,6 +375,78 @@ class CliCreate:
                         filter(bool, v.strip().split(",")))
             elif o == "--comment":
                 self._options["comment"] = v.strip()
+            #end if
+        #end for
+    #end function
+
+#end class
+
+class CliDelete:
+
+    def __init__(self, argv):
+        self._argv    = argv
+        self._options = {}
+    #end function
+
+    @staticmethod
+    def usage():
+        Cli.copyright()
+
+        sys.stdout.write(
+            "Usage: trello-cli delete <TYPE> [OPTIONS]                         \n"
+            "                                                                  \n"
+            "TYPES:                                                            \n"
+            "                                                                  \n"
+            "   card                                                           \n"
+            "                                                                  \n"
+            "OPTIONS:                                                          \n"
+            "                                                                  \n"
+            " --card-id <id>    When creating cards, a list (column) needs to  \n"
+            "                   be specifed.                                   \n"
+            "                                                                  \n"
+        )
+    #end function
+
+    def execute_command(self):
+        try:
+            type_ = self._argv[1]
+        except IndexError:
+            type_ = None
+
+        self._parse_opts()
+
+        if type_ == "card":
+            self.delete_card()
+        else:
+            CliDelete.usage()
+            sys.exit(Cli.EXIT_ERR)
+    #end function
+
+    def delete_card(self):
+        if not "card-id" in self._options:
+            raise CliInvocationError("please specify a card id.")
+
+        try:
+            Card(data={"id": self._options["card-id"]}).delete()
+        except TrelloClientError as e:
+            raise CliInvocationError("failed to delete the specified card.")
+    #end function
+
+    def _parse_opts(self):
+        try:
+            opts, args = getopt.getopt(self._argv[2:], "h",
+                    ["help", "card-id="])
+        except getopt.GetoptError as e:
+            CliDelete.usage()
+            sys.exit(Cli.EXIT_ERR)
+        #end try
+
+        for o, v in opts:
+            if o == "--help":
+                CliDelete.usage()
+                sys.exit(Cli.EXIT_OK)
+            elif o == "--card-id":
+                self._options["card-id"] = v.strip()
             #end if
         #end for
     #end function
