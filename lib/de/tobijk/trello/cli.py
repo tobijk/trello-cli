@@ -51,13 +51,14 @@ class Cli:
             # initialize Trello API client context
             TrelloClient(config["key"], config["token"])
 
-            rval = Cli.execute_command()
+            # go figure out what to do
+            Cli.execute_command()
         except TrelloBaseError as e:
             sys.stderr.write("trello-cli: %s\n" % str(e))
             sys.exit(Cli.EXIT_ERR)
         #end try
 
-        return rval
+        return Cli.EXIT_OK
     #end function
 
     @staticmethod
@@ -87,8 +88,6 @@ class Cli:
 
     @staticmethod
     def execute_command():
-        known_commands = ["list", "show", "create", "delete"]
-
         try:
             command = sys.argv[1]
         except IndexError:
@@ -139,8 +138,6 @@ class CliList:
     #end function
 
     def execute_command(self):
-        known_types = ["boards", "lists", "cards", "labels"]
-
         try:
             type_ = self._argv[1]
         except IndexError:
@@ -290,8 +287,6 @@ class CliCreate:
     #end function
 
     def execute_command(self):
-        known_types = ["card"]
-
         try:
             type_ = self._argv[1]
         except IndexError:
