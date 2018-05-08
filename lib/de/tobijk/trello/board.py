@@ -50,13 +50,7 @@ class Board(BaseModel):
         params = {"filter": filter, "fields": "id,name"}
 
         boards_data = tci()._execute("/members/me/boards", params=params)
-
-        list_of_boards = []
-
-        for data in boards_data:
-            list_of_boards.append(Board(data))
-
-        return list_of_boards
+        return [Board(data) for data in boards_data]
     #end function
 
     def __init__(self, data=None):
@@ -64,24 +58,12 @@ class Board(BaseModel):
 
     def lists(self):
         lists_data = tci()._execute(self.PATH + "/" + self.id + List.PATH)
-
-        list_of_lists = []
-
-        for data in lists_data:
-            list_of_lists.append(List(data))
-
-        return list_of_lists
+        return [List(data) for data in lists_data]
     #end function
 
     def labels(self):
         labels_data = tci()._execute(self.PATH + "/" + self.id + Label.PATH)
-
-        list_of_labels = []
-
-        for data in labels_data:
-            list_of_labels.append(Label(data))
-
-        return list_of_labels
+        return [Label(data) for data in labels_data]
     #end function
 
 #end class

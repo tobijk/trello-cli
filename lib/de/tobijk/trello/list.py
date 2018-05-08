@@ -38,13 +38,7 @@ class List(BaseModel):
         params = {"fields": "id,name"}
         cards_data = tci()._execute(self.PATH + "/" + self.id + Card.PATH,
                 params=params)
-
-        list_of_cards = []
-
-        for data in cards_data:
-            list_of_cards.append(Card(data))
-
-        return list_of_cards
+        return [Card(data) for data in cards_data]
     #end function
 
     def insert(self, pos, card):
