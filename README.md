@@ -45,7 +45,7 @@ $ trello-cli list lists --board-id="5aeddc7238bfa37f65227ba1"
 To list all labels in a board:
 
 ```sh
-trello-cli list labels --board-id="5aeddc7238bfa37f65227ba1"
+$ trello-cli list labels --board-id="5aeddc7238bfa37f65227ba1"
 |   0 | 5aee2a9703e80b77e7c11f84 |                             | green      |
 |   1 | 5aee2aa15ace49e909fde207 | Bla                         | orange     |
 ```
@@ -70,6 +70,12 @@ $ trello-cli create card \
 ```
 
 The position parameters determines, where a card is going to be inserted. Say `0` to insert the card at the beginning of the list, omit `--position` altogether to append the card to the list. Choose `1` to insert the card after the first element. Choose `2` to insert the card after the 2nd element. Choose `-1` to insert the card before the last element. And so on..
+
+To delete a card:
+
+```sh
+$ trello-cli delete card --card-id="5af1fd058a39ae3e3e8b74d1"
+```
 
 ## API Usage
 
@@ -141,3 +147,10 @@ In order to add a comment to a card:
 ```python
 card.add_comment("This is a comment.")
 ```
+
+In order to delete a card:
+
+```python
+Card({"id": "5af1fd058a39ae3e3e8b74d1"}).delete()
+```
+
