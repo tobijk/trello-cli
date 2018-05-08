@@ -401,8 +401,7 @@ class CliDelete:
             "                                                                  \n"
             "OPTIONS:                                                          \n"
             "                                                                  \n"
-            " --card-id <id>    When creating cards, a list (column) needs to  \n"
-            "                   be specifed.                                   \n"
+            " --card-id <id>    Specify the card to delete.                    \n"
             "                                                                  \n"
         )
     #end function
