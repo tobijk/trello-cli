@@ -12,7 +12,7 @@ dpkg-buildpackage -rfakeroot -b -us -uc
 
 cd ..
 
-sudo dpkg -i python3-trello-cli_0.1.0_amd64.deb
+sudo dpkg -i python3-trello-cli_0.1.0-1_all.deb
 ```
 
 ## CLI Usage

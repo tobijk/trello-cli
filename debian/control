@@ -12,7 +12,7 @@ X-Python-Version: >= 2.6
 X-Python3-Version: >= 3.2
 
 Package: python3-trello-cli
-Architecture: any
+Architecture: all
 Depends: ${python3:Depends}, ${misc:Depends}, python3-requests
 Description: simple Trello API client library and CLI (Python 3)
  This package contains a Python module that allows you to retrieve
