@@ -1,7 +1,8 @@
 # trello-cli
 
-This is a very simplistic Python3 module for communicating with the Trello API. It comes with a small command
-line tool which allows you to list boards, lists and cards. You can create new cards with labels, a comment and a description.
+This is a very simple Python3 module for communicating with the Trello API. It
+comes with a small command line tool which allows you to list boards, lists and
+cards. You can create new cards with labels, a comment and a description.
 
 ## Installation
 
@@ -17,7 +18,8 @@ sudo dpkg -i python3-trello-cli_0.1.0-1_all.deb
 
 ## CLI Usage
 
-Create a configuration file `~/.trello-cli/config.json` and set your app key and token like this:
+Create a configuration file `~/.trello-cli/config.json` and set your app key and
+token like this:
 
 ```json
 {
@@ -26,7 +28,7 @@ Create a configuration file `~/.trello-cli/config.json` and set your app key and
 }
 ```
 
-To list all your boards:
+List all your boards:
 
 ```sh
 $ trello-cli list boards
@@ -34,7 +36,7 @@ $ trello-cli list boards
 |   1 | 5aeddc7238bfa37f65227ba1 | TestBoard                                |
 ```
 
-To list all columns in a board:
+List all columns in a board:
 
 ```sh
 $ trello-cli list lists --board-id="5aeddc7238bfa37f65227ba1"
@@ -42,7 +44,7 @@ $ trello-cli list lists --board-id="5aeddc7238bfa37f65227ba1"
 |   1 | 5aee01979779eb62491ffdcf | List2                                    |
 ```
 
-To list all labels in a board:
+List all labels in a board:
 
 ```sh
 $ trello-cli list labels --board-id="5aeddc7238bfa37f65227ba1"
@@ -50,14 +52,14 @@ $ trello-cli list labels --board-id="5aeddc7238bfa37f65227ba1"
 |   1 | 5aee2aa15ace49e909fde207 | Bla                         | orange     |
 ```
 
-To list all cards in a list:
+List all cards in a list:
 
 ```sh
 $ trello-cli list cards --list-id="5aee01947afe7dd2dc784df8"
 |   0 | 5af0b5e2fc54c15b9ff1d34e | Card 1                                   |
 ```
 
-To create a new card in a list:
+Create a new card in a list:
 
 ```sh
 $ trello-cli create card \
@@ -66,12 +68,24 @@ $ trello-cli create card \
     --desc="Card description" \
     --labels="5aee2a9703e80b77e7c11f84,5aee2aa15ace49e909fde207" \
     --comment="This is a comment!" \
+    --due="31 May 2020" \
     --position 0
 ```
 
-The position parameters determines, where a card is going to be inserted. Say `0` to insert the card at the beginning of the list, omit `--position` altogether to append the card to the list. Choose `1` to insert the card after the first element. Choose `2` to insert the card after the 2nd element. Choose `-1` to insert the card before the last element. And so on..
+The `--position` parameter determines, where a card is going to be inserted. Say
+`0` to insert the card at the beginning of the list, omit `--position`
+altogether to append the card to the list. Choose `1` to insert the card after
+the first element. Choose `2` to insert the card after the 2nd element. Choose
+`-1` to insert the card before the last element. And so on..
 
-To delete a card:
+Move a card to another list:
+
+```sh
+$ trello-cli move card --card-id="5af410338d1e01ded11cf268" \
+    --list-id="5af40e5df0cb48ff44e15fb0"
+```
+
+Delete a card:
 
 ```sh
 $ trello-cli delete card --card-id="5af1fd058a39ae3e3e8b74d1"
@@ -136,6 +150,7 @@ card = Card()
 card.name     = "Card Name"
 card.desc     = "Card Description"
 card.idLabels = ["labelId1", "labelId2"]
+card.due      = "31 May 2020"
 
 list_.insert(0, card)
 ```
@@ -146,6 +161,12 @@ In order to add a comment to a card:
 
 ```python
 card.add_comment("This is a comment.")
+```
+
+Move a card to another list:
+
+```sh
+Card({"id": "5af1fd058a39ae3e3e8b74d1"}).move_to("5aee01947afe7dd2dc784df8")
 ```
 
 In order to delete a card:

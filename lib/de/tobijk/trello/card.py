@@ -54,5 +54,10 @@ class Card(BaseModel):
     def delete(self):
         tci()._execute(self.PATH + "/" + self.id, verb="DELETE")
 
+    def move_to(self, list_id):
+        params = {"idList": list_id }
+        tci()._execute(self.PATH + "/" + self.id, params=params, verb="PUT")
+    #end function
+
 #end class
 

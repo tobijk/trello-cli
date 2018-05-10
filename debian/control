@@ -7,18 +7,18 @@ Build-Depends: debhelper (>=9),
  python3-all,
  python3-setuptools
 Standards-Version: 3.9.6
-Homepage: 
-X-Python-Version: >= 2.6
+Homepage: https://github.com/tobijk/trello-cli
 X-Python3-Version: >= 3.2
 
 Package: python3-trello-cli
 Architecture: all
-Depends: ${python3:Depends}, ${misc:Depends}, python3-requests
-Description: simple Trello API client library and CLI (Python 3)
- This package contains a Python module that allows you to retrieve
- information about your Trello boards, lists and cards.
- .
- It comes with a simple CLI program.
+Depends: ${python3:Depends}, ${misc:Depends},
+ python3-requests,
+ python3-dateutil
+Description: Trello command line interface and API (Python 3)
+ This package provides a command line tool to interact with
+ the Trello API. It allows you to list boards, lists and cards
+ and to create new cards or move them between lists.
  .
  This package is only available for Python3.
 

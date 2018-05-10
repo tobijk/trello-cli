@@ -27,6 +27,8 @@ import sys
 import getopt
 import argparse
 
+from dateutil.parser import parse as dateparse
+
 from .client import Client as TrelloClient
 from .config import Config
 from .error  import TrelloBaseError, CliInvocationError, TrelloClientError
@@ -42,8 +44,6 @@ class Cli:
 
     @staticmethod
     def main():
-        rval = Cli.EXIT_ERR
-
         try:
             # load config from .trello-cli/config.json
             config = Config.load_config()
@@ -82,6 +82,7 @@ class Cli:
             "   list                                                           \n"
             "   create                                                         \n"
             "   delete                                                         \n"
+            "   move                                                           \n"
             "                                                                  \n"
             "Run 'trello-cli <command> --help' for more information.           \n"
         )
@@ -102,6 +103,8 @@ class Cli:
             return CliCreate(sys.argv[1:]).execute_command()
         if command == "delete":
             return CliDelete(sys.argv[1:]).execute_command()
+        if command == "move":
+            return CliMove(sys.argv[1:]).execute_command()
         else:
             Cli.usage()
             sys.exit(Cli.EXIT_ERR)
@@ -331,6 +334,8 @@ class CliCreate:
             card.name = self._options["name"]
         if ("desc" in self._options) and self._options["desc"]:
             card.desc = self._options["desc"]
+        if ("due" in self._options) and self._options["due"]:
+            card.due = self._options["due"]
 
         card.idLabels = labels
 
@@ -345,7 +350,7 @@ class CliCreate:
         try:
             opts, args = getopt.getopt(self._argv[2:], "h",
                     ["help", "name=", "desc=", "position=", "list-id=",
-                        "labels=", "comment="])
+                        "labels=", "comment=", "due="])
         except getopt.GetoptError as e:
             CliCreate.usage()
             sys.exit(Cli.EXIT_ERR)
@@ -375,6 +380,12 @@ class CliCreate:
                         filter(bool, v.strip().split(",")))
             elif o == "--comment":
                 self._options["comment"] = v.strip()
+            elif o == "--due":
+                try:
+                    due_date = dateparse(v)
+                except ValueError:
+                    raise CliInvocationError("could not parse due date.")
+                self._options["due"] = str(due_date.date())
             #end if
         #end for
     #end function
@@ -446,6 +457,80 @@ class CliDelete:
                 sys.exit(Cli.EXIT_OK)
             elif o == "--card-id":
                 self._options["card-id"] = v.strip()
+            #end if
+        #end for
+    #end function
+
+#end class
+
+class CliMove:
+
+    def __init__(self, argv):
+        self._argv    = argv
+        self._options = {}
+    #end function
+
+    @staticmethod
+    def usage():
+        Cli.copyright()
+
+        sys.stdout.write(
+            "Usage: trello-cli move <TYPE> [OPTIONS]                           \n"
+            "                                                                  \n"
+            "TYPES:                                                            \n"
+            "                                                                  \n"
+            "   card                                                           \n"
+            "                                                                  \n"
+            "OPTIONS:                                                          \n"
+            "                                                                  \n"
+            " --list-id <id>    Specify the id of the list to move the card to.\n"
+            "                                                                  \n"
+        )
+    #end function
+
+    def execute_command(self):
+        try:
+            type_ = self._argv[1]
+        except IndexError:
+            type_ = None
+
+        self._parse_opts()
+
+        if type_ == "card":
+            self.move_card()
+        else:
+            CliMove.usage()
+            sys.exit(Cli.EXIT_ERR)
+    #end function
+
+    def move_card(self):
+        if not "list-id" in self._options:
+            raise CliInvocationError("please specify a list id.")
+
+        try:
+            Card(data={"id": self._options["card-id"]})\
+                    .move_to(self._options["list-id"])
+        except TrelloClientError as e:
+            raise CliInvocationError("failed to move the card.")
+    #end function
+
+    def _parse_opts(self):
+        try:
+            opts, args = getopt.getopt(self._argv[2:], "h",
+                    ["help", "card-id=", "list-id="])
+        except getopt.GetoptError as e:
+            CliDelete.usage()
+            sys.exit(Cli.EXIT_ERR)
+        #end try
+
+        for o, v in opts:
+            if o == "--help":
+                CliDelete.usage()
+                sys.exit(Cli.EXIT_OK)
+            elif o == "--card-id":
+                self._options["card-id"] = v.strip()
+            elif o == "--list-id":
+                self._options["list-id"] = v.strip()
             #end if
         #end for
     #end function
