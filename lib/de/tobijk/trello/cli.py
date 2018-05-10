@@ -288,6 +288,7 @@ class CliCreate:
             " --labels <id..>   Comma separate list of label IDs to tag a      \n"
             "                   card with.                                     \n"
             " --comment <text>  An initial comment to attache to the card.     \n"
+            " --due <date>      An optional due date.                          \n"
             "                                                                  \n"
         )
     #end function
